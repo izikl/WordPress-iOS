@@ -290,6 +290,9 @@
                     <connections>
                         <outlet property="nextButton" destination="WfR-k8-60S" id="vb6-08-2fS"/>
                         <outlet property="siteTitleField" destination="JwX-ho-zFz" id="ngh-sc-R5X"/>
+                        <outlet property="stepDescrLabel1" destination="sd4-RA-bw3" id="FxD-L8-VVh"/>
+                        <outlet property="stepDescrLabel2" destination="npq-Al-GPF" id="vex-dh-4VA"/>
+                        <outlet property="stepLabel" destination="Rxd-oA-tJl" id="qDO-Gt-9N3"/>
                         <outlet property="tagDescrLabel" destination="1so-uS-oh3" id="Xx6-pL-K7x"/>
                         <outlet property="taglineField" destination="UEW-iA-mQ5" id="E0n-ep-GCM"/>
                     </connections>

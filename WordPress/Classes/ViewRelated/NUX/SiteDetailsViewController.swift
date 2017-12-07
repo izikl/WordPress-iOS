@@ -33,7 +33,7 @@ class SiteDetailsViewController: UIViewController, LoginWithLogoAndHelpViewContr
         nextButton.isEnabled = false
         siteTitleField.becomeFirstResponder()
     }
-    
+
     private func localizedText() {
         stepLabel.text = NSLocalizedString("STEP 3 OF 4", comment: "Step for view.")
         stepDescrLabel1.text = NSLocalizedString("Tell us more about the site you're creating.", comment: "Site details instruction.")
@@ -61,15 +61,45 @@ class SiteDetailsViewController: UIViewController, LoginWithLogoAndHelpViewContr
     fileprivate func validateForm() {
     }
 
+    fileprivate func stringHasValue(_ textString: String?) -> Bool {
+
+        guard let textString = textString else {
+            return false
+        }
+
+        return textString.trim().count > 0
+    }
+
     // MARK: - Button Handling
 
     @IBAction func nextButtonPressed(_ sender: Any) {
-        let message = "Title: '\(siteTitleField.text!)'\nTagline: '\(taglineField.text ?? "")'\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
-        let alertController = UIAlertController(title: nil,
-                                                message: message,
-                                                preferredStyle: .alert)
-        alertController.addDefaultActionWithTitle("OK")
-        self.present(alertController, animated: true, completion: nil)
+        if !stringHasValue(siteTitleField.text) {
+            showError()
+        }
+        else {
+            let message = "Title: '\(siteTitleField.text!)'\nTagline: '\(taglineField.text ?? "")'\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
+            let alertController = UIAlertController(title: nil,
+                                                    message: message,
+                                                    preferredStyle: .alert)
+            alertController.addDefaultActionWithTitle("OK")
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+
+    fileprivate func toggleNextButton(_ textField: UITextField) {
+        if textField == siteTitleField {
+            nextButton.isEnabled = stringHasValue(textField.text)
+        }
+    }
+
+    private func showError() {
+        let overlayView = WPWalkthroughOverlayView(frame: view.bounds)
+        overlayView.overlayTitle = NSLocalizedString("Error", comment: "Error title")
+        overlayView.overlayDescription = NSLocalizedString("Site Title must have a value.", comment: "Site Title error message.")
+        overlayView.dismissCompletionBlock = { overlayView in
+            overlayView?.dismiss()
+        }
+        view.addSubview(overlayView)
     }
 
     // MARK: - Misc
@@ -80,6 +110,8 @@ class SiteDetailsViewController: UIViewController, LoginWithLogoAndHelpViewContr
     }
 
 }
+
+// MARK: - UITextFieldDelegate
 
 extension SiteDetailsViewController: UITextFieldDelegate {
 
@@ -94,12 +126,25 @@ extension SiteDetailsViewController: UITextFieldDelegate {
         return true
     }
 
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == siteTitleField,
-            var siteTitle = textField.text {
-            siteTitle = siteTitle.trimmingCharacters(in: .whitespacesAndNewlines)
-            nextButton.isEnabled = (siteTitle.count > 0)
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let updatedString = NSString(string: textField.text!).replacingCharacters(in: range, with: string)
+        nextButton.isEnabled = stringHasValue(updatedString)
+        return true
+    }
+
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        if textField == siteTitleField {
+            nextButton.isEnabled = false
         }
+        return true
+    }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        toggleNextButton(textField)
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
+        toggleNextButton(textField)
     }
 
 }

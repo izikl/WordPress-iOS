@@ -33,6 +33,8 @@ class SiteDetailsViewController: UIViewController, LoginWithLogoAndHelpViewContr
         tagDescrLabel.textColor = WPStyleGuide.greyDarken20()
         nextButton.isEnabled = false
         siteTitleField.becomeFirstResponder()
+        siteTitleField.textInsets.left = 20
+        taglineField.textInsets.left = 20
     }
 
     private func localizedText() {

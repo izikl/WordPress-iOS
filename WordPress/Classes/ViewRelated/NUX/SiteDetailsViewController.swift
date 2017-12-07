@@ -21,6 +21,7 @@ class SiteDetailsViewController: UIViewController, LoginWithLogoAndHelpViewContr
         super.viewDidLoad()
         configureView()
         localizedText()
+        setupBackgroundTapGestureRecognizer()
     }
 
     private func configureView() {
@@ -42,6 +43,17 @@ class SiteDetailsViewController: UIViewController, LoginWithLogoAndHelpViewContr
         taglineField.placeholder = NSLocalizedString("Optional tagline", comment: "Site tagline placeholder.")
         tagDescrLabel.text = NSLocalizedString("The tagline is a short line of text shown right below the title in most themes, and acts as site metadata on search engines.", comment: "Tagline description.")
         nextButton.titleLabel?.text = NSLocalizedString("Next", comment: "Next button title.")
+    }
+
+    // MARK: - TapGestureRecognizer
+
+    private func setupBackgroundTapGestureRecognizer() {
+        let tgr = UITapGestureRecognizer(target: self, action: #selector(SiteDetailsViewController.handleBackgroundTapGesture(_:)))
+        view.addGestureRecognizer(tgr)
+    }
+
+    @objc private func handleBackgroundTapGesture(_ tgr: UITapGestureRecognizer) {
+        view.endEditing(true)
     }
 
     // MARK: - LoginWithLogoAndHelpViewController

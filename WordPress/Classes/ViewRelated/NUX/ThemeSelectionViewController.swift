@@ -95,6 +95,14 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
         performSegue(withIdentifier: "showSiteDetails", sender: theme)
     }
 
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let backButton = UIBarButtonItem()
+        backButton.title = "Back"
+        navigationItem.backBarButtonItem = backButton
+    }
+
     // MARK: - Theme Fetching
 
     private func createThemesFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult> {

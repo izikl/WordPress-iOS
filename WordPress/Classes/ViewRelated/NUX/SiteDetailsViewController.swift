@@ -64,6 +64,12 @@ class SiteDetailsViewController: UIViewController, LoginWithLogoAndHelpViewContr
     // MARK: - Button Handling
 
     @IBAction func nextButtonPressed(_ sender: Any) {
+        let message = "Title: '\(siteTitleField.text!)'\nTagline: '\(taglineField.text ?? "")'\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
+        let alertController = UIAlertController(title: nil,
+                                                message: message,
+                                                preferredStyle: .alert)
+        alertController.addDefaultActionWithTitle("OK")
+        self.present(alertController, animated: true, completion: nil)
     }
 
     // MARK: - Misc
@@ -90,8 +96,8 @@ extension SiteDetailsViewController: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == siteTitleField,
-            let siteTitle = textField.text {
-            siteTitleField.text = siteTitle.trimmingCharacters(in: .whitespacesAndNewlines)
+            var siteTitle = textField.text {
+            siteTitle = siteTitle.trimmingCharacters(in: .whitespacesAndNewlines)
             nextButton.isEnabled = (siteTitle.count > 0)
         }
     }
